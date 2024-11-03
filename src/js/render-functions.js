@@ -64,3 +64,9 @@ export const toggleLoadMoreButton = (element, isClassAdd = true) => {
   }
   element.classList.remove('is-visible');
 };
+
+export const clearGallery = () => {
+  galleryMarkup = '';
+  galleryElement.innerHTML = galleryMarkup;
+  gallery.refresh();
+};

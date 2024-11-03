@@ -6,6 +6,7 @@ import {
   renderGallery,
   toggleLoading,
   toggleLoadMoreButton,
+  clearGallery,
 } from './js/render-functions';
 
 const form = document.querySelector('.search-form');
@@ -29,6 +30,8 @@ const onSubmit = async (event) => {
   event.preventDefault();
   page = 1;
   toggleLoadMoreButton(loadMoreButton, false);
+  clearGallery();
+  console.log(searchKey);
 
   if (!searchKey) {
     error.innerHTML = 'Please add search keyword';
@@ -36,11 +39,11 @@ const onSubmit = async (event) => {
   }
   toggleLoading(loaderElements, page);
   const { images, totalHits } = await fetchImages(searchKey, page);
-  console.log(totalHits);
 
   toggleLoading(loaderElements, page);
   renderGallery(images, true);
   form.reset();
+  searchKey = '';
   if (!images.length) {
     iziToast.error({
       message: `Sorry, there are no images matching your search query. Please try again!`,
