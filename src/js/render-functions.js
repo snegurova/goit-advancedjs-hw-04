@@ -12,8 +12,13 @@ const gallery = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
 });
 
-export const renderGallery = (images) => {
-  const markup = images.reduce(
+let galleryMarkup = '';
+
+export const renderGallery = (images, isClear = false) => {
+  if (isClear) {
+    galleryMarkup = '';
+  }
+  galleryMarkup = images.reduce(
     (
       acc,
       { webformatURL, largeImageURL, tags, likes, views, comments, downloads }
@@ -37,13 +42,25 @@ export const renderGallery = (images) => {
       </li>`
       );
     },
-    ''
+    galleryMarkup
   );
 
-  galleryElement.innerHTML = markup;
+  galleryElement.innerHTML = galleryMarkup;
   gallery.refresh();
 };
 
-export const toggleLoading = (element) => {
-  element.classList.toggle('loading');
+export const toggleLoading = (elements, page) => {
+  if (page === 1) {
+    elements[0].classList.toggle('loading');
+    return;
+  }
+  elements[1].classList.toggle('loading');
+};
+
+export const toggleLoadMoreButton = (element, isClassAdd = true) => {
+  if (isClassAdd) {
+    element.classList.add('is-visible');
+    return;
+  }
+  element.classList.remove('is-visible');
 };
