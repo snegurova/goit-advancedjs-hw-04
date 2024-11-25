@@ -15,6 +15,7 @@ const loaderElements = document.querySelectorAll('.loader');
 const loadMoreButton = document.querySelector('.load-more-button');
 
 let searchKey = '';
+let showMoreKey = '';
 let page = 1;
 let galleryMarkup = '';
 let scrollHeight = 0;
@@ -28,10 +29,12 @@ form.addEventListener('input', onInput);
 
 const onSubmit = async (event) => {
   event.preventDefault();
+
+  clearGallery();
+
+  showMoreKey = searchKey;
   page = 1;
   toggleLoadMoreButton(loadMoreButton, false);
-  clearGallery();
-  console.log(searchKey);
 
   if (!searchKey) {
     error.innerHTML = 'Please add search keyword';
@@ -67,8 +70,7 @@ const onClick = async (event) => {
   page += 1;
 
   toggleLoading(loaderElements, page);
-  const { images, totalHits } = await fetchImages(searchKey, page);
-  console.log(totalHits);
+  const { images, totalHits } = await fetchImages(showMoreKey, page);
 
   toggleLoading(loaderElements, page);
   renderGallery(images);
